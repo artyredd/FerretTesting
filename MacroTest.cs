@@ -7,7 +7,7 @@ namespace FerretTesting
         [Test]
         public void TestMacroRemove()
         {
-            var data = "using System.Text;\n#define test(var)\\\n__debugbreak();\nvoid method();\n";
+            var data = "using System.Text;\n#define test(var)\\\r\n__debugbreak();\r\nvoid method();\n";
             var tokens = new Tokenizer(data).Parse();
             var stream = new TokenStream(tokens);
 

@@ -11,9 +11,10 @@ namespace FerretTesting
             var tokens = new Tokenizer(data).Parse();
 
             var pattern = new TokenPattern()
-                .When(x => x.Value == ")\\");
+                .When(")")
+                .IsFollowedBy("\\");
 
-            int found = tokens.FindPattern(pattern);
+            int found = tokens.IndexOf(pattern);
 
             Assert.AreEqual(13, found);
         }
@@ -35,7 +36,7 @@ namespace FerretTesting
                 .IsFollowedBy(TokenType.Whitespace)
                 .IsPreceededBy(TokenType.Text);
 
-            int found = tokens.FindPattern(pattern);
+            int found = tokens.IndexOf(pattern);
 
             Assert.AreEqual(5, found);
         }
@@ -43,23 +44,20 @@ namespace FerretTesting
         [Test]
         public void TokenPatternAdvanced()
         {
-            var data = "using System.Text;\n#define test(var)\\\n__debugbreak();\nvoid method();\n";
+            var data = "1. 2. 3. 4. 5. 6. 7. 8. 9";
             var tokens = new Tokenizer(data).Parse();
 
             var pattern = new TokenPattern(false)
                 .When(TokenType.Control)
-                .IsPreceededBy(TokenType.Text)
+                .IsPreceededBy(x=> x == "4")
                 .IsPreceededBy(TokenType.Whitespace)
-                .IsPreceededBy(TokenType.Text)
-                .IsPreceededBy(x=>x == "#")
-                .IsPreceededBy(TokenType.Whitespace)
-                .IsFollowedBy(TokenType.Text)
-                .IsFollowedBy(x=>x== ")\\")
-                .IsFollowedBy(TokenType.Whitespace);
+                .IsPreceededBy(TokenType.Control)
+                .IsFollowedBy(TokenType.Whitespace)
+                .IsFollowedBy(x=> x == "6");
 
-            int found = tokens.FindPattern(pattern);
+            int found = tokens.IndexOf(pattern);
 
-            Assert.AreEqual(11, found);
+            Assert.AreEqual(10, found);
         }
     }
 }
