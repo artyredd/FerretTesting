@@ -53,7 +53,7 @@ namespace FerretTesting
                 .IsPreceededBy(TokenType.Whitespace)
                 .IsPreceededBy(TokenType.Control)
                 .IsFollowedBy(TokenType.Whitespace)
-                .IsFollowedBy(x=> x == "6");
+                .IsFollowedBy(x=> x == "5");
 
             int found = tokens.IndexOf(pattern);
 
